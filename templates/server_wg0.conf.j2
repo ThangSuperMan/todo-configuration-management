@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+[Interface]
+Address = 10.0.0.1/24
+SaveConfig = true
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o enX0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o enX0 -j MASQUERADE
+ListenPort = 51820
+PrivateKey = {{ server_privkey }}
+
+[Peer]
+PublicKey = ui7IhF2GF+yDmglNuZcZh8bIad/6ogiSOD3qC7Lqgkg=
+AllowedIPs = 10.0.0.2/32
+Endpoint = 27.64.213.18:60878
