@@ -1,5 +1,5 @@
 ---
 - name: Restart wireguard
-  shell: wg-quick down {{ vpn.wireguard_interface }}; wg-quick up {{ vpn.wireguard_interface }}
+  shell: wg-quick down {{ wireguard_interface }}; wg-quick up {{ wireguard_interface }}
   args:
     executable: /bin/bash
