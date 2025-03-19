@@ -1,12 +1,12 @@
 ---
 destination_network_interface: "enX0"
-wireguard_server_ip: 10.0.0.1/24
+wireguard_server_ip: "172.16.0.1/24"
 wireguard_interface: "wg0"
 wireguard_port: "51820"
 wireguard_peers:
   - name: peer1
     public_key: "ui7IhF2GF+yDmglNuZcZh8bIad/6ogiSOD3qC7Lqgkg="
-    allowed_ips: "10.0.0.2/24"
+    allowed_ips: "172.16.0.2/24"
 wireguard_server_privkey: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   31393162313535633264396436386134366666336238663532313531353931373762326432383335
