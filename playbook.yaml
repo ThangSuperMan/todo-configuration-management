@@ -1,36 +1,6 @@
 ---
-- hosts: vpn_server
+- name: Setup VPN server
+  tags: [vpn]
+  hosts: [vpn_server]
+  roles: [wireguard_vpn]
   become: yes
-  tasks:
-    - name: Enable IPv4 forwarding
-      lineinfile:
-        path: /etc/sysctl.conf
-        regexp: "^#net.ipv4.ip_forward=1"
-        line: "net.ipv4.ip_forward=1"
-
-    - name: Apply sysctl settings
-      command: sysctl -p
-
-    - name: Install wireguard package
-      apt:
-        name: wireguard
-        state: present
-        update-cache: true
-
-    - name: Create server wireguard config
-      template:
-        dest: /etc/wireguard/wg0.conf
-        src: etc/wireguard/wg0.conf.j2
-      notify: Restart wireguard
-
-    - name: Start server wireguard and enable on boot
-      systemd_service:
-        name: wg-quick@wg0
-        enabled: true
-        state: started
-
-  handlers:
-    - name: Restart wireguard
-      shell: wg-quick down {{ vpn.wireguard_interface }}; wg-quick up {{ vpn.wireguard_interface }}
-      args:
-        executable: /bin/bash

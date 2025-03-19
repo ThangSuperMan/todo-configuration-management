@@ -1,0 +1,27 @@
+---
+- name: Enable IPv4 forwarding
+  lineinfile:
+    path: /etc/sysctl.conf
+    regexp: "^#net.ipv4.ip_forward=1"
+    line: "net.ipv4.ip_forward=1"
+
+- name: Apply sysctl settings
+  command: sysctl -p
+
+- name: Install wireguard package
+  apt:
+    name: wireguard
+    state: present
+    update-cache: true
+
+- name: Create server wireguard config
+  template:
+    dest: /etc/wireguard/wg0.conf
+    src: wg0.conf.j2
+  notify: Restart wireguard
+
+- name: Start server wireguard and enable on boot
+  systemd_service:
+    name: wg-quick@wg0
+    enabled: true
+    state: started
